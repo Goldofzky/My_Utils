@@ -16,7 +16,7 @@ public class SensitiveWordFilter {
         }
         StringBuilder newtext = new StringBuilder();
         WordNode nowNode = words.getRoot();
-
+        String temp = "";
         int begin = 0;
         int pos = 0;
 
@@ -25,18 +25,25 @@ public class SensitiveWordFilter {
             nowNode = nowNode.getNext().get(c);
 
             if (nowNode == null){
-                newtext.append(c);
-                pos = begin + 1;
+                if (temp != ""){
+                    newtext.append(temp);
+                }else {
+                    newtext.append(c);
+                    pos = begin + 1;
+                }
                 begin = pos;
                 nowNode = words.getRoot();
+                temp = "";
             }
             else {
                 pos++;
+                temp += c;
                 //find sensitive word
                 if (nowNode.getEnd()){
                     newtext.append(DEFAULT_REPLACEMENT);
                     begin = pos;
                     nowNode = words.getRoot();
+                    temp = "";
                 }
 
             }
